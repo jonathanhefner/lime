@@ -1,4 +1,5 @@
 #include "renderer/opengl/OpenGLContext.h"
+#include "renderer/opengl/OpenGLProgram.h"
 
 
 int sgDrawCount = 0;
@@ -145,6 +146,28 @@ namespace lime {
 			sgDrawCount = 0;
 			sgDrawBitmap = 0;
 			
+			if(!mCustomProg) {
+				std::string vs = 	"uniform mat4 uTransform;\n"
+									"attribute vec4 aVertex;\n"
+									"attribute vec2 aTexCoord;\n"
+									"varying vec2 vTexCoord;\n"
+									"void main()\n"
+									"{\n"
+									   "vTexCoord = aTexCoord;\n"
+									   "gl_Position = aVertex * uTransform;\n"
+									"}\n"
+				;
+				std::string fs = 	"uniform sampler2D uImage0;\n"
+									"varying vec2 vTexCoord;\n"
+									"void main()\n"
+									"{\n"
+									   "gl_FragColor =vec4(1.0, 0.5, 1.0, 0.5) * texture2D(uImage0,vTexCoord);\n"
+									"}\n"
+				;
+				printf("%s",vs.c_str());
+				printf("%s",fs.c_str());
+				mCustomProg = CreateGPUProgram(vs, fs);
+			}
 		}
 		
 	}
@@ -443,7 +466,13 @@ namespace lime {
 			}
 			
 			bool persp = element.mFlags & DRAW_HAS_PERSPECTIVE;
-			GPUProg *prog = mProg[progId];
+			GPUProg *prog;
+			
+			if(/*element.mFlags & DRAW_HAS_SHADER &&*/ mCustomProg) {
+			   prog = mCustomProg;	
+			} else {
+			   prog = mProg[progId];
+			}
 			
 			if (!prog) {
 				
@@ -495,6 +524,8 @@ namespace lime {
 				lastProg = prog;
 				
 			}
+			
+			prog->applyUniforms();
 			
 			int stride = element.mStride;
 			if (prog->vertexSlot >= 0) {
@@ -690,4 +721,11 @@ namespace lime {
 	}
 	
 		
+	GPUProg *OpenGLContext::CreateGPUProgram(const std::string &inVertexString, const std::string &inFragmentString) {
+		return new OpenGLProgram (inVertexString, inFragmentString);
+	}
+	
+	void OpenGLContext::useGPUProgram(GPUProg *program) {
+		mCustomProg = program;
+	}
 }

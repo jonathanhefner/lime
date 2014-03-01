@@ -193,6 +193,8 @@ namespace lime {
 		mASlot = glGetUniformLocation (mProgramId, "mA");
 		mOn2ASlot = glGetUniformLocation (mProgramId, "mOn2A");
 		
+		// traverse all the uniforms and get their location
+		
 		glUseProgram (mProgramId);
 	    
 	    if (mImageSlot >= 0) {
@@ -203,6 +205,9 @@ namespace lime {
 	    
 	}
 	
+	void OpenGLProgram::applyUniforms() {
+	   // apply the custom uniforms
+	}
 	
 	void OpenGLProgram::setColourTransform (const ColorTransform *inTransform, uint32 inColor) {
 		

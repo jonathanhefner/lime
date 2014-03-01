@@ -22,6 +22,7 @@ enum
    DRAW_HAS_TEX         = 0x00000010,
    DRAW_BMP_REPEAT      = 0x00000020,
    DRAW_BMP_SMOOTH      = 0x00000040,
+   DRAW_HAS_SHADER		= 0x00000080,
 };
 
 

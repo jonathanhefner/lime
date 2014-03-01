@@ -5,6 +5,7 @@
 #include <LimeThread.h>
 #include "renderer/opengl/OGL.h"
 #include "renderer/common/HardwareContext.h"
+#include "renderer/common/GPUProgram.h"
 
 
 namespace lime {
@@ -39,6 +40,9 @@ namespace lime {
 			int Height () const { return mHeight; }
 			int Width () const { return mWidth; }
 			
+			GPUProg *CreateGPUProgram(const std::string &inVertexString, const std::string &inFragmentString);
+			void useGPUProgram(GPUProg *program);
+			
 			HardwareData mBitmapBuffer;
 			Texture *mBitmapTexture;
 			Trans4x4 mBitmapTrans;
@@ -53,6 +57,7 @@ namespace lime {
 			double mOffsetY;
 			GLCtx mOGLCtx;
 			GPUProg *mProg[PROG_COUNT];
+			GPUProg *mCustomProg;
 			StageQuality mQuality;
 			double mScaleX;
 			double mScaleY;

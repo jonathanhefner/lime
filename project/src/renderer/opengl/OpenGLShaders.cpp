@@ -1,4 +1,5 @@
 #include "renderer/opengl/OGL.h"
+#include "renderer/common/GPUProgram.h"
 #include "renderer/opengl/OpenGLProgram.h"
 
 

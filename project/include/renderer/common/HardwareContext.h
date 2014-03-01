@@ -4,7 +4,7 @@
 
 #include <Object.h>
 #include <Graphics.h>
-
+#include "renderer/common/GPUProgram.h"
 
 namespace lime {
 	
@@ -35,6 +35,9 @@ namespace lime {
 			virtual void SetViewport (const Rect &inRect) = 0;
 			virtual void SetWindowSize (int inWidth, int inHeight) = 0;
 			virtual int Width () const = 0;
+			
+			virtual class GPUProg *CreateGPUProgram(const std::string &inVertexString, const std::string &inFragmentString) = 0;
+			virtual void useGPUProgram(GPUProg *program) = 0;
 		
 	};
 	

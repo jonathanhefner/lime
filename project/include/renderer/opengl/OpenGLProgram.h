@@ -3,6 +3,7 @@
 
 
 #include "renderer/opengl/OGL.h"
+#include "renderer/common/GPUProgram.h"
 
 
 namespace lime {
@@ -24,6 +25,8 @@ namespace lime {
 			void recreate ();
 			void setColourTransform (const ColorTransform *inTransform, unsigned int inColour);
 			void setTransform (const Trans4x4 &inTrans);
+			
+			void applyUniforms();
 			
 			GLint mASlot;
 			GLint mColourArraySlot;

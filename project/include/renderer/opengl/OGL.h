@@ -216,6 +216,7 @@ enum
    PROG_COUNT =             0x0100,
 };
 
+/*
 typedef float Trans4x4[4][4];
 
 class GPUProg
@@ -238,6 +239,7 @@ public:
    int colourSlot;
 
 };
+*/
 
 void InitOGL2Extensions();
 
