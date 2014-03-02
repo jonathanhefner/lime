@@ -10,7 +10,7 @@ namespace lime {
 	const float one_on_255 = 1.0 / 255.0;
 	
 	
-	OpenGLProgram::OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg) {
+	OpenGLProgram::OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg, unsigned int inID) {
 		
 		mVertProg = inVertProg;
 		mFragProg = inFragProg;
@@ -24,6 +24,8 @@ namespace lime {
 		textureSlot = -1;
 		normalSlot = -1;
 		colourSlot = -1;
+		
+		ID = inID;
 		
 		//printf("%s", inVertProg.c_str());
 		//printf("%s", inFragProg.c_str());

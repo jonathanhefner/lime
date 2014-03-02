@@ -2,13 +2,14 @@
 #define RENDERER_GPUPROGRAM_H
 
 #include <Graphics.h>
+#include <Object.h>
 
 namespace lime 
 {
 	
 	typedef float Trans4x4[4][4];
-	class GPUProg
-	{
+	class GPUProg : public Object {
+		
 	public:
 	   static GPUProg *create(unsigned int inID);
 	   
@@ -27,7 +28,7 @@ namespace lime
 	   int textureSlot;
 	   int normalSlot;
 	   int colourSlot;
-
+	   unsigned int ID;
 	};
 
 }

@@ -650,6 +650,11 @@ public:
 		return mPrimarySurface;
 	}
 	
+	HardwareContext *GetHardwareContext()
+	{
+	    return mOpenGLContext;	
+	}
+	
 	
 	HardwareContext *mOpenGLContext;
 	SDL_Window *mSDLWindow;

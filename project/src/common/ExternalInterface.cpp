@@ -20,6 +20,7 @@
 #include "renderer/common/Surface.h"
 #include "renderer/common/SimpleSurface.h"
 #include "renderer/common/AutoSurfaceRender.h"
+#include "renderer/common/HardwareContext.h"
 #include <Tilesheet.h>
 #include <Font.h>
 #include <Sound.h>
@@ -1481,6 +1482,39 @@ value lime_managed_stage_pump_event(value inStage,value inEvent)
 }
 DEFINE_PRIM(lime_managed_stage_pump_event,2);
 
+// --- GPUProgram ----------------------------------------------------------------------
+
+value lime_gpuprogram_create(value inStage, value inVertexString, value inFragmentString)
+{
+   Stage *stage = 0;
+   if(AbstractToObject(inStage, stage)) {
+	   printf("Creating GPUProgram");
+	   std::string _vs(val_string(inVertexString));
+	   std::string _fs(val_string(inFragmentString));
+	   
+	   HardwareContext *context = stage->GetHardwareContext();
+	   GPUProg *program = context->CreateGPUProgram(_vs, _fs);
+	   return(ObjectToAbstract(program));
+   } else {
+	   printf("Fail to create GPUProgram because the stage is not managed");
+   }
+   return alloc_null();
+}
+DEFINE_PRIM(lime_gpuprogram_create,3);
+
+value lime_gpuprogram_use(value inStage, value inProgram)
+{
+   Stage *stage = 0;
+   GPUProg *program = 0;
+   if(AbstractToObject(inStage, stage)) {
+	   AbstractToObject(inProgram, program);
+	   HardwareContext *context = stage->GetHardwareContext();
+	   context->useGPUProgram(program);
+   }
+   return alloc_null();
+}
+DEFINE_PRIM(lime_gpuprogram_use,2);
+
 
 #endif
 
@@ -1985,6 +2019,7 @@ value lime_direct_renderer_set(value inRenderer, value inCallback)
    return alloc_null();
 }
 DEFINE_PRIM(lime_direct_renderer_set,2);
+
 
 // --- SimpleButton -----------------------------------------------------
 

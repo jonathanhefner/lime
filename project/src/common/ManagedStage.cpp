@@ -75,5 +75,11 @@ Surface *ManagedStage::GetPrimarySurface()
 }
 
 
+HardwareContext *ManagedStage::GetHardwareContext()
+{
+  return mHardwareContext;
+}
+
+
 } // end namespace lime
 

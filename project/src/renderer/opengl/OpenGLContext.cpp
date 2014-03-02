@@ -146,6 +146,7 @@ namespace lime {
 			sgDrawCount = 0;
 			sgDrawBitmap = 0;
 			
+			/*
 			if(!mCustomProg) {
 				std::string vs = 	"uniform mat4 uTransform;\n"
 									"attribute vec4 aVertex;\n"
@@ -168,6 +169,7 @@ namespace lime {
 				printf("%s",fs.c_str());
 				mCustomProg = CreateGPUProgram(vs, fs);
 			}
+			*/
 		}
 		
 	}
@@ -722,7 +724,7 @@ namespace lime {
 	
 		
 	GPUProg *OpenGLContext::CreateGPUProgram(const std::string &inVertexString, const std::string &inFragmentString) {
-		return new OpenGLProgram (inVertexString, inFragmentString);
+		return new OpenGLProgram (inVertexString, inFragmentString, 200);
 	}
 	
 	void OpenGLContext::useGPUProgram(GPUProg *program) {

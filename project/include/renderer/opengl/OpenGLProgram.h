@@ -13,7 +13,7 @@ namespace lime {
 		
 		public:
 			
-			OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg);
+			OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg, unsigned int inID);
 			virtual ~OpenGLProgram ();
 			
 			virtual bool bind ();

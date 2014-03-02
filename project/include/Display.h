@@ -418,6 +418,7 @@ public:
    virtual void Flip() = 0;
    virtual void GetMouse() = 0;
    virtual Surface *GetPrimarySurface() = 0;
+   virtual HardwareContext *GetHardwareContext() = 0;
    virtual void PollNow() { }
 
    virtual void RenderStage();
@@ -462,7 +463,6 @@ public:
    int getDisplayState() const { return displayState; }
    void setDisplayState(int inDisplayState);
    int GetAA();
-
 
    void RemovingFromStage(DisplayObject *inObject);
    Stage  *getStage() { return this; }
@@ -517,14 +517,14 @@ public:
    void SetCursor(Cursor inCursor);
    bool isOpenGL() const { return mHardwareContext; }
    Surface *GetPrimarySurface();
+   HardwareContext *GetHardwareContext();
 
    int Width() { return mActiveWidth; }
    int Height() { return mActiveHeight; }
 
    double getStageWidth() { return mActiveWidth; }
    double getStageHeight() { return mActiveHeight; }
-
-
+   
    void SetActiveSize(int inW,int inH);
    void PumpEvent(Event &inEvent);
    void Flip() { }
