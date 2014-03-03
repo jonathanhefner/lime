@@ -145,31 +145,6 @@ namespace lime {
 			// printf("DrawArrays: %d, DrawBitmaps:%d  Buffers:%d\n", sgDrawCount, sgDrawBitmap, sgBufferCount );
 			sgDrawCount = 0;
 			sgDrawBitmap = 0;
-			
-			/*
-			if(!mCustomProg) {
-				std::string vs = 	"uniform mat4 uTransform;\n"
-									"attribute vec4 aVertex;\n"
-									"attribute vec2 aTexCoord;\n"
-									"varying vec2 vTexCoord;\n"
-									"void main()\n"
-									"{\n"
-									   "vTexCoord = aTexCoord;\n"
-									   "gl_Position = aVertex * uTransform;\n"
-									"}\n"
-				;
-				std::string fs = 	"uniform sampler2D uImage0;\n"
-									"varying vec2 vTexCoord;\n"
-									"void main()\n"
-									"{\n"
-									   "gl_FragColor =vec4(1.0, 0.5, 1.0, 0.5) * texture2D(uImage0,vTexCoord);\n"
-									"}\n"
-				;
-				printf("%s",vs.c_str());
-				printf("%s",fs.c_str());
-				mCustomProg = CreateGPUProgram(vs, fs);
-			}
-			*/
 		}
 		
 	}
@@ -469,8 +444,8 @@ namespace lime {
 			
 			bool persp = element.mFlags & DRAW_HAS_PERSPECTIVE;
 			GPUProg *prog;
-			
-			if(/*element.mFlags & DRAW_HAS_SHADER &&*/ mCustomProg) {
+			if(element.mFlags & DRAW_HAS_GPUPROGRAM && mCustomProg) {
+			   //printf("Element drawing with custom prog ID: %d \n", element.mGPUProgram);
 			   prog = mCustomProg;	
 			} else {
 			   prog = mProg[progId];

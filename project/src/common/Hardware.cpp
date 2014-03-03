@@ -59,6 +59,7 @@ public:
       mElement.mColour = 0xffffffff;
       mElement.mVertexOffset = ioData.mArray.size();
       mElement.mStride = 2*sizeof(float);
+	  mElement.mGPUProgram = 0; 
       
       mSolidMode = false;
       mAlphaAA = false;
@@ -215,6 +216,9 @@ public:
                mElement.mBlendMode = bmMultiply;
             else if (cmd[i] == pcBlendModeScreen)
                mElement.mBlendMode = bmScreen;
+			else if (cmd[i] == pcGPUProgram) {
+			   mElement.mFlags |= DRAW_HAS_GPUPROGRAM;
+			}
          }
          
          if (has_colour)
@@ -461,6 +465,12 @@ public:
                point+=2;
                break;
 
+			case pcGPUProgram: 
+			  {
+				  UserPoint program = *point++;	
+				  mElement.mGPUProgram = program.x;
+				  break;
+			  }
             case pcTile:
             case pcTileTrans:
             case pcTileCol:

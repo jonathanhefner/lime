@@ -2461,8 +2461,16 @@ value lime_gfx_draw_datum(value inGfx,value inDatum)
 }
 DEFINE_PRIM(lime_gfx_draw_datum,2);
 
-value lime_gfx_draw_tiles(value inGfx,value inSheet, value inXYIDs,value inFlags,value inDataSize)
+//value inGfx, value inSheet, value inXYIDs, value inGPUProgram, value inFlags, value inDataSize
+value lime_gfx_draw_tiles(value *args, int nargs)
 {
+   value inGfx 		= args[0];
+   value inSheet 	= args[1];
+   value inXYIDs	= args[2];
+   value inGPUProg	= args[3];
+   value inFlags 	= args[4];
+   value inDataSize = args[5];
+	
    Graphics *gfx;
    Tilesheet *sheet;
    if (AbstractToObject(inGfx,gfx) && AbstractToObject(inSheet,sheet))
@@ -2498,7 +2506,7 @@ value lime_gfx_draw_tiles(value inGfx,value inSheet, value inXYIDs,value inFlags
       }
 
       bool smooth = flags & TILE_SMOOTH;
-      gfx->beginTiles(&sheet->GetSurface(), smooth, blend);
+      gfx->beginTiles(&sheet->GetSurface(), smooth, blend, val_int(inGPUProg));
 
       int components = 3;
       int scale_pos = 3;
@@ -2643,7 +2651,7 @@ value lime_gfx_draw_tiles(value inGfx,value inSheet, value inXYIDs,value inFlags
    }
    return alloc_null();
 }
-DEFINE_PRIM(lime_gfx_draw_tiles,5);
+DEFINE_PRIM_MULT(lime_gfx_draw_tiles);
 
 
 static bool sNekoLutInit = false;

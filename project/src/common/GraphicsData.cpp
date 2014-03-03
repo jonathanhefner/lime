@@ -54,7 +54,12 @@ void GraphicsPath::elementBlendMode(int inMode)
    }
 }
 
-
+void GraphicsPath::elementGPUProgram(int inGPUProgramID)
+{
+	commands.push_back(pcGPUProgram);
+	data.push_back(inGPUProgramID);
+	data.push_back(0);
+}
 
 void GraphicsPath::lineTo(float x, float y)
 {
