@@ -255,6 +255,12 @@ enum PathCommand
    pcPointsXY  = 9,
    pcPointsXYRGBA  = 11,
 
+   pcTile           = 0x10,
+   pcTile_Trans_Bit = 0x01,
+   pcTile_Col_Bit   = 0x02,
+   pcTileTrans      = 0x11,
+   pcTileCol        = 0x12,
+   pcTileTransCol   = 0x13,
 
    pcBlendModeAdd   = 0x20,
    pcBlendModeMultiply   = 0x21,
