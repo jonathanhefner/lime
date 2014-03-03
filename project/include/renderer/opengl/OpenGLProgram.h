@@ -13,7 +13,7 @@ namespace lime {
 		
 		public:
 			
-			OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg, unsigned int inID);
+			OpenGLProgram (const std::string &inVertProg, const std::string &inFragProg);
 			virtual ~OpenGLProgram ();
 			
 			virtual bool bind ();
@@ -25,6 +25,8 @@ namespace lime {
 			void recreate ();
 			void setColourTransform (const ColorTransform *inTransform, unsigned int inColour);
 			void setTransform (const Trans4x4 &inTrans);
+			
+			int getProgramID();
 			
 			void applyUniforms();
 			

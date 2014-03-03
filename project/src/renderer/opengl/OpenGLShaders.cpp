@@ -178,7 +178,7 @@ namespace lime {
 				"   gl_FragColor = " + fragColour + ";\n" +
 			"}\n";
 		
-		return new OpenGLProgram (vertexShader, pixelShader, inID);
+		return new OpenGLProgram (vertexShader, pixelShader);
 		
 	}
 	

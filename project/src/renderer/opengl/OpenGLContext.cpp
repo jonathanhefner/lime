@@ -32,9 +32,8 @@ namespace lime {
 		for (int i = 0; i < PROG_COUNT; i++) {
 			
 			mProg[i] = 0;
-			
 		}
-		
+
 		for (int i = 0; i < 4; i++) {
 			
 			for (int j = 0; j < 4; j++) {
@@ -443,11 +442,13 @@ namespace lime {
 			}
 			
 			bool persp = element.mFlags & DRAW_HAS_PERSPECTIVE;
-			GPUProg *prog;
-			if(element.mFlags & DRAW_HAS_GPUPROGRAM && mCustomProg) {
+			GPUProg *prog = 0;
+			if(element.mFlags & DRAW_HAS_GPUPROGRAM) {
 			   //printf("Element drawing with custom prog ID: %d \n", element.mGPUProgram);
-			   prog = mCustomProg;	
-			} else {
+			   prog = mCustomProgs[element.mGPUProgram];
+			} 
+			
+			if (!prog) {
 			   prog = mProg[progId];
 			}
 			
@@ -699,7 +700,9 @@ namespace lime {
 	
 		
 	GPUProg *OpenGLContext::CreateGPUProgram(const std::string &inVertexString, const std::string &inFragmentString) {
-		return new OpenGLProgram (inVertexString, inFragmentString, 200);
+		GPUProg *program = new OpenGLProgram (inVertexString, inFragmentString);
+		mCustomProgs[program->getProgramID()] = program;
+		return program;
 	}
 	
 	void OpenGLContext::useGPUProgram(GPUProg *program) {

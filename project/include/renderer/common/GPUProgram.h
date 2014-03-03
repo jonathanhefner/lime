@@ -11,6 +11,7 @@ namespace lime
 	class GPUProg : public Object {
 		
 	public:
+	   GPUProg() { ++_current_id; }	
 	   static GPUProg *create(unsigned int inID);
 	   
 	   virtual ~GPUProg() {}
@@ -22,13 +23,17 @@ namespace lime
 	   virtual void setColourTransform(const ColorTransform *inTransform, unsigned int inColour) = 0;
 	   virtual void setGradientFocus(float inFocus) = 0;
 	   
+	   virtual int getProgramID() = 0;
 	   virtual void applyUniforms() = 0;
 	   
 	   int vertexSlot;
 	   int textureSlot;
 	   int normalSlot;
 	   int colourSlot;
-	   unsigned int ID;
+	
+    protected:
+	   int ID;
+	   static int _current_id;	
 	};
 
 }

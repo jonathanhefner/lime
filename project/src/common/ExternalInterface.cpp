@@ -1488,15 +1488,12 @@ value lime_gpuprogram_create(value inStage, value inVertexString, value inFragme
 {
    Stage *stage = 0;
    if(AbstractToObject(inStage, stage)) {
-	   printf("Creating GPUProgram");
 	   std::string _vs(val_string(inVertexString));
 	   std::string _fs(val_string(inFragmentString));
 	   
 	   HardwareContext *context = stage->GetHardwareContext();
 	   GPUProg *program = context->CreateGPUProgram(_vs, _fs);
 	   return(ObjectToAbstract(program));
-   } else {
-	   printf("Fail to create GPUProgram because the stage is not managed");
    }
    return alloc_null();
 }
@@ -1515,6 +1512,16 @@ value lime_gpuprogram_use(value inStage, value inProgram)
 }
 DEFINE_PRIM(lime_gpuprogram_use,2);
 
+value lime_gpuprogram_get_id(value inProgram)
+{
+   GPUProg *program = 0;
+   if(AbstractToObject(inProgram, program)) {
+	   return alloc_int(program->getProgramID());
+   }
+   
+   return alloc_null();
+}
+DEFINE_PRIM(lime_gpuprogram_get_id,1);
 
 #endif
 

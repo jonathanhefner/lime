@@ -3,6 +3,7 @@
 
 
 #include <LimeThread.h>
+#include <map>
 #include "renderer/opengl/OGL.h"
 #include "renderer/common/HardwareContext.h"
 #include "renderer/common/GPUProgram.h"
@@ -57,6 +58,7 @@ namespace lime {
 			double mOffsetY;
 			GLCtx mOGLCtx;
 			GPUProg *mProg[PROG_COUNT];
+			std::map<int, GPUProg *> mCustomProgs;
 			GPUProg *mCustomProg;
 			StageQuality mQuality;
 			double mScaleX;
