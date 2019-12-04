@@ -7,6 +7,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef HX_WINDOWS
+#include <Windows.h>
+#endif
+
 #ifdef EMSCRIPTEN
 #include "emscripten.h"
 #endif
