@@ -3,10 +3,10 @@
 	url = https://github.com/native-toolkit/vorbis
 [submodule "project/lib/sdl"]
 	path = project/lib/sdl
-	url = https://github.com/native-toolkit/sdl
+url=https://github.com/mrcdk/sdl
 [submodule "project/lib/openal"]
 	path = project/lib/openal
-	url = https://github.com/native-toolkit/openal
+url=https://github.com/mrcdk/openal
 [submodule "project/lib/curl"]
 	path = project/lib/curl
 	url = https://github.com/native-toolkit/curl
@@ -36,7 +36,7 @@
 	url = https://github.com/native-toolkit/cairo
 [submodule "project/lib/pixman"]
 	path = project/lib/pixman
-	url = https://github.com/native-toolkit/pixman
+url=https://github.com/mrcdk/pixman
 [submodule "project/lib/lzma"]
 	path = project/lib/lzma
 	url = https://github.com/native-toolkit/lzma

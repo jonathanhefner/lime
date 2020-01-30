@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import java.util.List;
+
 
 public class Extension {
 	
@@ -32,7 +34,7 @@ public class Extension {
 		
 	}
 
-	public boolean onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public boolean LIMEonRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
 		return true;
 

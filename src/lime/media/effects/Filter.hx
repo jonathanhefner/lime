@@ -24,7 +24,9 @@ class Filter {
 	}
 
 	inline function attachSource(source:AudioSource) {
+		#if cpp
 		AL.sourcei(source.__backend.handle, AL.DIRECT_FILTER, filterHandle);
+		#end
 	}
 
 	public function update() {

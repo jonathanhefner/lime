@@ -1173,7 +1173,7 @@ namespace lime {
 
 		bool Ok () const {
 
-			return mField > 0;
+			return mField != 0;
 
 		}
 
@@ -1706,7 +1706,7 @@ namespace lime {
 
 		bool Ok () const {
 
-			return mMethod > 0;
+			return mMethod != 0;
 
 		}
 

@@ -649,7 +649,11 @@ class System {
 
 		if (__applicationDirectory == null) {
 
+			#if android
+			__applicationDirectory = "/";
+			#else
 			__applicationDirectory = __getDirectory (APPLICATION);
+			#end
 
 		}
 

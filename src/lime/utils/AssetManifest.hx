@@ -180,6 +180,9 @@ class AssetManifest {
 
 		}
 
+		trace('Basepath: $basePath');
+		trace('path: $path');
+
 		if (StringTools.endsWith (basePath, ".bundle")) {
 
 			if (queryIndex > -1) {
