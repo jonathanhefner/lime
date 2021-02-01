@@ -440,7 +440,7 @@ class AndroidPlatform extends PlatformTarget {
 
 		}
 
-		IconHelper.createIcon (icons, 732, 412, sourceSet + "/res/drawable-xhdpi/ouya_icon.png");
+		//IconHelper.createIcon (icons, 732, 412, sourceSet + "/res/drawable-xhdpi/ouya_icon.png");
 
 		var packageDirectory = project.meta.packageName;
 		packageDirectory = sourceSet + "/java/" + packageDirectory.split (".").join ("/");
