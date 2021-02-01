@@ -1,3 +1,4 @@
+System.setProperty('java.awt.headless', 'false')
 import groovy.swing.SwingBuilder
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -103,6 +104,7 @@ dependencies {
 def getPassword(message) {
 	def password = '';
 	if (System.console() == null) {
+		System.setProperty('java.awt.headless', 'false')
 		new SwingBuilder().edt {
 			dialog(
 				title: 'Enter password',
