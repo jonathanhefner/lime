@@ -420,25 +420,32 @@ class AndroidPlatform extends PlatformTarget {
 
 		}
 
-		var iconTypes = [ "ldpi", "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi" ];
-		var iconSizes = [ 36, 48, 72, 96, 144, 192 ];
-		var icons = project.icons;
+		if (false) {
 
-		if (icons.length == 0) {
 
-			icons = [ new Icon (System.findTemplate (project.templatePaths, "default/icon.svg")) ];
+			var iconTypes = [ "ldpi", "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi" ];
+			var iconSizes = [ 36, 48, 72, 96, 144, 192 ];
+			var icons = project.icons;
 
-		}
+			if (icons.length == 0) {
 
-		for (i in 0...iconTypes.length) {
+				icons = [ new Icon (System.findTemplate (project.templatePaths, "default/icon.svg")) ];
 
-			if (IconHelper.createIcon (icons, iconSizes[i], iconSizes[i], sourceSet + "/res/drawable-" + iconTypes[i] + "/icon.png")) {
+			}
 
-				context.HAS_ICON = true;
+			for (i in 0...iconTypes.length) {
+
+				if (IconHelper.createIcon (icons, iconSizes[i], iconSizes[i], sourceSet + "/res/drawable-" + iconTypes[i] + "/icon.png")) {
+
+					context.HAS_ICON = true;
+
+				}
 
 			}
 
 		}
+
+		context.HAS_ICON = true;
 
 		//IconHelper.createIcon (icons, 732, 412, sourceSet + "/res/drawable-xhdpi/ouya_icon.png");
 
