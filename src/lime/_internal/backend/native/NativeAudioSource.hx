@@ -165,16 +165,15 @@ class NativeAudioSource {
 			dataLength = parent.buffer.data.length;
 
 			#if mobile
-			// RANDOM NUMBER INCOMING In theory iOS has 32 (?????) and android 256 (?????) but I'll set both to 32 and hope for the best
+			// RANDOM NUMBER INCOMING In theory iOS has 32 (?????) and android 256 (?????) but I'll set both to 128 and hope for the best
 			var max_handles = 32;
 			#if android
-			max_handles = 32;
+			max_handles = 128;
 			#elseif ios
-			max_handles = 32;
+			max_handles = 128;
 			#end
 
-
-			if(__handles.length > max_handles) {
+			if(__handles.length > max_handles - 1) {
 				var found = false;
 				for(i in 0...__handles.length) {
 					var tmp = __handles[i];
