@@ -35,7 +35,9 @@ class Effect {
 	}
 
 	inline function attachSource(source:AudioSource) {
-		#if cpp
+		#if mobile
+		// nothing
+		#elseif cpp
 		AL.source3i(source.__backend.handle, AL.AUXILIARY_SEND_FILTER, auxHandle, 0, effectHandle);
 		#end
 	}
@@ -63,7 +65,9 @@ class Effect {
 
 	public function removeSource(source:AudioSource) {
 		sources.remove(source);
-		#if cpp
+		#if mobile
+		// nothing
+		#elseif cpp
 		AL.removeSend(source.__backend.handle, 0);
 		#end
 	}
