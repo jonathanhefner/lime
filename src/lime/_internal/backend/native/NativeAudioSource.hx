@@ -27,6 +27,8 @@ class NativeAudioSource {
 	private static var STREAM_NUM_BUFFERS = 3;
 	private static var STREAM_TIMER_FREQUENCY = 100;
 
+	static var __handles:Array<ALSource> = [];
+
 	private var buffers:Array<ALBuffer>;
 	private var completed:Bool;
 	private var dataLength:Int;
@@ -55,15 +57,44 @@ class NativeAudioSource {
 
 	public function dispose ():Void {
 
-		if (handle != null) {
+		if (handle == null) {
+			return;
+		} 
 
-			stop ();
-			AL.sourcei (handle, AL.BUFFER, null);
-			AL.deleteSource (handle);
-			handle = null;
 
+		if(AL.getSourcei(handle, AL.BUFFER) != 0) {
+			AL.sourcei(handle, AL.BUFFER, null);
+			error();
+		}
+		
+		#if mobile
+		var idx = __handles.indexOf(handle);
+		if(__handles.remove(handle)) {
+			AL.deleteSource(handle);
+			error();
+		}
+		#else
+		AL.deleteSource(handle);
+		error();
+		#end
+
+		if(buffers != null) {
+			while(buffers.length > 0) {
+				AL.deleteBuffer(buffers.pop());
+				error();
+			}
 		}
 
+		handle = null;
+		buffers = null;
+
+	}
+
+	inline function error(?pos:haxe.PosInfos) {
+		#if debug
+		var e = AL.getErrorString();
+		if(e != null && e.length > 0) trace('${pos.methodName}:${pos.lineNumber} -> ${e}');
+		#end
 	}
 
 	public function update() {}
@@ -133,7 +164,38 @@ class NativeAudioSource {
 
 			dataLength = parent.buffer.data.length;
 
-			handle = AL.createSource ();
+			#if mobile
+			// RANDOM NUMBER INCOMING In theory iOS has 32 (?????) and android 256 (?????) but I'll set both to 32 and hope for the best
+			var max_handles = 32;
+			#if android
+			max_handles = 32;
+			#elseif ios
+			max_handles = 32;
+			#end
+
+
+			if(__handles.length > max_handles) {
+				var found = false;
+				for(i in 0...__handles.length) {
+					var tmp = __handles[i];
+					if(tmp != null && AL.getSourcei (tmp, AL.SOURCE_STATE) != AL.PLAYING) {
+						initHandle(tmp);
+						found = true;
+						break;
+					}
+				}
+				if(!found) {
+					trace("COULDN'T GET A HANDLE!!!");
+				}
+			} else {
+				initHandle();
+				__handles.push(handle);
+			}
+			#else
+			initHandle();
+			#end
+
+			
 
 			if (handle != null) {
 
@@ -145,6 +207,27 @@ class NativeAudioSource {
 
 		samples = Std.int ((dataLength * 8) / (parent.buffer.channels * parent.buffer.bitsPerSample));
 
+	}
+
+	inline function initHandle(force_handle:ALSource = null) {
+		if(force_handle == null) {
+			handle = AL.createSource();
+			error();
+		} else {
+			handle = force_handle;
+		}
+		AL.sourcef(handle, AL.GAIN, 1.0);
+		error();
+		AL.sourcei(handle, AL.LOOPING, AL.FALSE);
+		error();
+		AL.sourcef(handle, AL.PITCH, 1.0);
+		error();
+		AL.distanceModel(AL.NONE);
+		error();
+		AL.source3f(handle, AL.POSITION, 0, 0, 0);
+		error();
+		AL.source3f(handle, AL.VELOCITY, 0, 0, 0);
+		error();
 	}
 
 
