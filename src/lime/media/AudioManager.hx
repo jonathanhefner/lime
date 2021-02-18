@@ -108,15 +108,15 @@ class AudioManager {
 
 	public static function update() {
 
-		for (source in audioSources) {
-			source.update();
-		}
-
 		while (sourcesToRemove.length > 0) {
 			var source = sourcesToRemove.pop();
 			if(audioSources.indexOf(source) != -1) {
 				audioSources.remove(source);
 			}
+		}
+		
+		for (source in audioSources) {
+			source.update();
 		}
 
 	}

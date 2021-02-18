@@ -135,24 +135,12 @@ class NativeAudioSource2 {
 			}
 
 			if(result.ended) {
-				if(loops > 0) {
-					seek(0);
+				// wait until no more buffers are queued to stop and emit the onComplete signal
+				var queued:Int = AL.getSourcei(handle, AL.BUFFERS_QUEUED);
+				error();
 
-					// refill buffer if it's empty
-					if(result.amount <= 0) {
-						fillBuffer(buffer);
-					}
-
-					loops--;
-				} else {
-
-					// wait until no more buffers are queued to stop and emit the onComplete signal
-					var queued:Int = AL.getSourcei(handle, AL.BUFFERS_QUEUED);
-					error();
-
-					if(queued <= 0) {
-						stillStreaming = false;
-					}
+				if(queued <= 0) {
+					stillStreaming = false;
 				}
 			}
 
@@ -225,7 +213,7 @@ class NativeAudioSource2 {
 
 	function fillBuffer(buffer:ALBuffer, ?pos:haxe.PosInfos):FillBufferResult {
 		
-		var position = Std.int(Int64.toInt(vorbisFile.pcmTell()) * audioSource.buffer.channels * (audioSource.buffer.bitsPerSample / 8));
+		//var position = Std.int(Int64.toInt(vorbisFile.pcmTell()) * audioSource.buffer.channels * (audioSource.buffer.bitsPerSample / 8));
 
 		var result = readVorbisFile();
 
@@ -274,12 +262,18 @@ class NativeAudioSource2 {
 				readMax = length - total;
 			}
 
+			//(buffer:Bytes, position:Int, length:Int = 4096, bigEndianPacking:Bool = false, wordSize:Int = 2, signed:Bool = true)
 			read = vorbisFile.read(bufferData.buffer, total, readMax);
 
 			if(read > 0) {
 				total += read;
 			} else {
-				break;
+				if(loops > 0) {
+					seek(0);
+					loops--;
+				} else {
+					break;
+				}
 			}
 		}
 

@@ -67,6 +67,7 @@ class NativeAudioSource {
 			error();
 		}
 		
+		/*
 		#if mobile
 		var idx = __handles.indexOf(handle);
 		if(__handles.remove(handle)) {
@@ -77,6 +78,9 @@ class NativeAudioSource {
 		AL.deleteSource(handle);
 		error();
 		#end
+		*/
+		AL.deleteSource(handle);
+		error();
 
 		if(buffers != null) {
 			while(buffers.length > 0) {
@@ -164,6 +168,7 @@ class NativeAudioSource {
 
 			dataLength = parent.buffer.data.length;
 
+			/*
 			#if mobile
 			// RANDOM NUMBER INCOMING In theory iOS has 32 (?????) and android 256 (?????) but I'll set both to 128 and hope for the best
 			var max_handles = 32;
@@ -193,6 +198,8 @@ class NativeAudioSource {
 			#else
 			initHandle();
 			#end
+			*/
+			initHandle();
 
 			
 
