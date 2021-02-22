@@ -474,6 +474,8 @@
 				<lib name="-lGLESv2" />
 				<lib name="-lGLESv1_CM" />
 				<lib name="-lOpenSLES" />
+				<lib name="-latomic" />
+				<flag value="-Wl,--no-undefined,--no-allow-shlib-undefined" />
 
 			</section>
 
