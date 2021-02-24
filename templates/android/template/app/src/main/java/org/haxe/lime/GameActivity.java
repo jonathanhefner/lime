@@ -15,6 +15,7 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.content.pm.ActivityInfo;
 import org.haxe.extension.Extension;
 import org.libsdl.app.SDLActivity;
 
@@ -67,6 +68,18 @@ public class GameActivity extends SDLActivity {
 	@Override protected String getMainFunction () {
 
 		return "hxcpp_main";
+
+	}
+
+	@Override public void setOrientationBis(int w, int h, boolean resizable, String hint) {
+
+		::if (ANDROID_APP_ORIENTATION == "landscape")::
+		mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+		::elseif (ANDROID_APP_ORIENTATION == "portrait")::
+		mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+		::else::
+		mSingleton.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+		::end::
 
 	}
 

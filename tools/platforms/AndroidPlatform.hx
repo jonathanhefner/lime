@@ -489,6 +489,15 @@ class AndroidPlatform extends PlatformTarget {
 
 		}
 
+		switch(project.window.orientation) {
+			case LANDSCAPE:
+				context.ANDROID_APP_ORIENTATION = "landscape";
+			case PORTRAIT:
+				context.ANDROID_APP_ORIENTATION = "portrait";
+			case _:
+			context.ANDROID_APP_ORIENTATION = "auto";
+		}
+
 		ProjectHelper.recursiveSmartCopyTemplate (project, "android/template", destination, context);
 		System.copyFileTemplate (project.templatePaths, "android/MainActivity.java", packageDirectory + "/MainActivity.java", context);
 		ProjectHelper.recursiveSmartCopyTemplate (project, "haxe", targetDirectory + "/haxe", context);
