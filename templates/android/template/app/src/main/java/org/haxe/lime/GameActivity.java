@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.os.PowerManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -32,6 +33,7 @@ public class GameActivity extends SDLActivity {
 	private static DisplayMetrics metrics;
 
 	public Handler handler;
+	private PowerManager powerManager;
 
 
 	public static double getDisplayXDPI () {
@@ -145,6 +147,19 @@ public class GameActivity extends SDLActivity {
 
 		}
 
+		/*
+		powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
+		if (Build.VERSION.SDK_INT >= 24) {
+			if (powerManager.isSustainedPerformanceModeSupported()) {
+				getWindow().setSustainedPerformanceMode(true);
+				Log.d("lime", "Enabled sustained performance mode");
+			} else {
+				Log.d("lime", "Sustained performance mode not available");
+			}
+		} else {
+			Log.d("lime", "Sustained performance mode not available");
+		}
+		*/
 	}
 
 
