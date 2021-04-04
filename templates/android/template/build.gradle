@@ -8,7 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:::ANDROID_GRADLE_PLUGIN::'
-		
+
 		// NOTE: Do not place your application dependencies here; they belong
 		// in the individual module build.gradle files
 	}
@@ -27,9 +27,11 @@ task clean(type: Delete) {
 	delete rootProject.buildDir
 }
 
+/*
 task wrapper(type: Wrapper) {
 	gradleVersion = '::ANDROID_GRADLE_VERSION::'
 }
+*/
 
 configure(subprojects.findAll {!it.file('build.gradle').exists() && it.file('build.xml').exists()}) {
 	buildscript {
@@ -38,18 +40,18 @@ configure(subprojects.findAll {!it.file('build.gradle').exists() && it.file('bui
 				url "http://repo1.maven.org/maven2/"
 			}
 		}
-		
+
 		dependencies {
 			classpath 'com.android.tools.build:gradle:::ANDROID_GRADLE_PLUGIN::'
 		}
 	}
-	
+
 	apply plugin: 'android-library'
-	
+
 	android {
 		compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
 		buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
-		
+
 		sourceSets {
 			main {
 				manifest.srcFile 'AndroidManifest.xml'
@@ -58,7 +60,7 @@ configure(subprojects.findAll {!it.file('build.gradle').exists() && it.file('bui
 			}
 		}
 	}
-	
+
 	dependencies {
 		implementation fileTree(dir: 'libs', include: ['*.jar'])
 		implementation project(':deps:extension-api')

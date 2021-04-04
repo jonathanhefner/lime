@@ -172,7 +172,8 @@ class AndroidPlatform extends PlatformTarget {
 
 		if (noOutput) return;
 
-		AndroidHelper.build (project, destination);
+		var bundle = project.defines.exists("aab");
+		AndroidHelper.build (project, destination, bundle);
 
 	}
 
@@ -365,6 +366,7 @@ class AndroidPlatform extends PlatformTarget {
 		context.ANDROID_PERMISSIONS = project.config.getArrayString ("android.permission", [ "android.permission.WAKE_LOCK", "android.permission.INTERNET", "android.permission.VIBRATE", "android.permission.ACCESS_NETWORK_STATE" ]);
 		context.ANDROID_GRADLE_VERSION = project.config.getString ("android.gradle-version", "2.10");
 		context.ANDROID_GRADLE_PLUGIN = project.config.getString ("android.gradle-plugin", "2.1.0");
+		context.ANDROID_ASSET_PACKS = project.config.getArrayString("android.asset-pack", []);
 		context.ANDROID_LIBRARY_PROJECTS = [];
 
 		if (!project.environment.exists ("ANDROID_SDK") || !project.environment.exists ("ANDROID_NDK_ROOT")) {
@@ -512,6 +514,12 @@ class AndroidPlatform extends PlatformTarget {
 				AssetHelper.copyAsset (asset, targetPath, context);
 
 			}
+
+		}
+
+		for (pack in context.ANDROID_ASSET_PACKS) {
+
+			System.copyFileTemplate (project.templatePaths, "android/asset_pack_build.gradle", '${targetDirectory}/bin/${pack}/build.gradle', {name: pack});
 
 		}
 

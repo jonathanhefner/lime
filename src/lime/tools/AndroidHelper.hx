@@ -17,7 +17,7 @@ class AndroidHelper {
 	private static var emulatorPath:String;
 
 
-	public static function build (project:HXProject, projectDirectory:String):Void {
+	public static function build (project:HXProject, projectDirectory:String, bundle:Bool = false):Void {
 
 		if (project.environment.exists ("ANDROID_SDK")) {
 
@@ -25,11 +25,11 @@ class AndroidHelper {
 
 		}
 
-		var task = "assembleDebug";
+		var task = bundle ? "bundleDebug" : "assembleDebug";
 
 		if (project.keystore != null) {
 
-			task = "assembleRelease";
+			task = bundle ? "bundleRelease" : "assembleRelease";
 
 		}
 
