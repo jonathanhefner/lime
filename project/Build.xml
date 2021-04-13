@@ -277,10 +277,11 @@
 
 		<section if="LIME_ZLIB">
 
-			<compilerflag value="-DSTATIC_LINK" if="emscripten" />
+			<!-- <compilerflag value="-DSTATIC_LINK" if="emscripten" /> -->
+			<compilerflag value="-DSTATIC_LINK" if="emscripten || ios || tvos" />
 			<compilerflag value="-DLIME_ZLIB" />
 
-			<file name="${HXCPP}/src/hx/libs/zlib/ZLib.cpp" if="emscripten || ios || static_link || tvos" />
+			<!-- <file name="${HXCPP}/src/hx/libs/zlib/ZLib.cpp" if="emscripten || ios || static_link || tvos" /> -->
 			<file name="src/utils/compress/Zlib.cpp" />
 
 		</section>
