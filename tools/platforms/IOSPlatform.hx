@@ -80,7 +80,7 @@ class IOSPlatform extends PlatformTarget
 		}
 		else
 		{
-			Sys.println(getDisplayHXML());
+			Sys.println(getDisplayHXML().toString());
 		}
 	}
 
@@ -141,7 +141,8 @@ class IOSPlatform extends PlatformTarget
 		{
 			if (!StringTools.endsWith(dependency.name, ".framework")
 				&& !StringTools.endsWith(dependency.name, ".tbd")
-				&& !StringTools.endsWith(dependency.path, ".framework"))
+				&& !StringTools.endsWith(dependency.path, ".framework")
+				&& !StringTools.endsWith(dependency.path, ".xcframework"))
 			{
 				if (dependency.path != "")
 				{
@@ -181,10 +182,15 @@ class IOSPlatform extends PlatformTarget
 
 		if (project.config.getString("ios.device", "universal") == "universal" || project.config.getString("ios.device") == "iphone")
 		{
-			if (project.config.getFloat("ios.deployment", 8) < 5)
+			if (project.config.getFloat("ios.deployment", 9) < 5)
 			{
 				ArrayTools.addUnique(architectures, Architecture.ARMV6);
 			}
+		}
+
+		if (project.config.getFloat("ios.deployment", 9) > 10) 
+		{
+			architectures.remove(Architecture.ARMV7);
 		}
 
 		for (architecture in project.architectures)
@@ -241,14 +247,14 @@ class IOSPlatform extends PlatformTarget
 			case "ipad": "2";
 			default: "1,2";
 		}
-		context.DEPLOYMENT = project.config.getString("ios.deployment", "8.0");
+		context.DEPLOYMENT = project.config.getString("ios.deployment", "9.0");
 
 		if (project.config.getString("ios.compiler") == "llvm" || project.config.getString("ios.compiler", "clang") == "clang")
 		{
 			context.OBJC_ARC = true;
 		}
 
-		// context.ENABLE_BITCODE = (project.config.getFloat ("ios.deployment", 8) >= 6);
+		// context.ENABLE_BITCODE = (project.config.getFloat ("ios.deployment", 9) >= 6);
 		context.ENABLE_BITCODE = project.config.getBool("ios.enable-bitcode", false);
 		context.IOS_COMPILER = project.config.getString("ios.compiler", "clang");
 		context.CPP_BUILD_LIBRARY = project.config.getString("cpp.buildLibrary", "hxcpp");
@@ -318,6 +324,12 @@ class IOSPlatform extends PlatformTarget
 				path = Path.tryFullPath(dependency.path);
 				fileType = "wrapper.framework";
 			}
+			else if (Path.extension(dependency.path) == "xcframework")
+			{
+				name = Path.withoutDirectory(dependency.path);
+				path = Path.tryFullPath(dependency.path);
+				fileType = "wrapper.xcframework";
+			}
 
 			if (name != null)
 			{
@@ -372,7 +384,7 @@ class IOSPlatform extends PlatformTarget
 		return context;
 	}
 
-	private function getDisplayHXML():String
+	private function getDisplayHXML():HXML
 	{
 		var path = targetDirectory + "/" + project.app.file + "/haxe/Build.hxml";
 
@@ -503,7 +515,6 @@ class IOSPlatform extends PlatformTarget
 			}
 		}
 
-		/*
 		if (project.launchStoryboard != null)
 		{
 			var sb = project.launchStoryboard;
@@ -559,7 +570,6 @@ class IOSPlatform extends PlatformTarget
 					default:
 				}
 			}
-			
 
 			if (sb.template != null)
 			{
@@ -600,7 +610,6 @@ class IOSPlatform extends PlatformTarget
 			}
 		}
 		else
-		*/
 		{
 			var splashSizes:Array<SplashSize> = [
 				{name: "Default.png", w: 320, h: 480}, // iPhone, portrait
@@ -678,12 +687,19 @@ class IOSPlatform extends PlatformTarget
 		ProjectHelper.recursiveSmartCopyTemplate(project, "iphone/PROJ.xcodeproj", targetDirectory + "/" + project.app.file + ".xcodeproj", context, true,
 			false);
 
-		//Merge plist files
-		var plistFiles = System.readDirectory(projectDirectory).filter(function(fileName:String){
+		// Merge plist files
+		var plistFiles = System.readDirectory(projectDirectory).filter(function(fileName:String)
+		{
 			return fileName.substr(-11) == "-Info.plist" && fileName != projectDirectory + "/" + project.app.file + "-Info.plist";
 		});
-		for(plist in plistFiles){
-			System.runCommand(project.workingDirectory, "/usr/libexec/PlistBuddy", ["-x", "-c", "Merge " + plist, projectDirectory + "/" + project.app.file + "-Info.plist"]);
+		for (plist in plistFiles)
+		{
+			System.runCommand(project.workingDirectory, "/usr/libexec/PlistBuddy", [
+				"-x",
+				"-c",
+				"Merge '" + plist + "'",
+				projectDirectory + "/" + project.app.file + "-Info.plist"
+			]);
 		}
 
 		System.mkdir(projectDirectory + "/lib");
@@ -809,7 +825,15 @@ class IOSPlatform extends PlatformTarget
 	}*/
 	public override function watch():Void
 	{
-		var dirs = []; // WatchHelper.processHXML (getDisplayHXML (), project.app.path);
+		var hxml = getDisplayHXML();
+		var dirs = hxml.getClassPaths(true);
+
+		var outputPath = Path.combine(Sys.getCwd(), project.app.path);
+		dirs = dirs.filter(function(dir)
+		{
+			return (!Path.startsWith(dir, outputPath));
+		});
+
 		var command = ProjectHelper.getCurrentCommand();
 		System.watch(command, dirs);
 	}
