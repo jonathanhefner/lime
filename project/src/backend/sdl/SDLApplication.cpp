@@ -40,7 +40,7 @@ namespace lime {
 
 		#if defined (IPHONE) || defined (APPLETV)
 		SDL_SetHintWithPriority(SDL_HINT_IOS_HIDE_HOME_INDICATOR, "2", SDL_HINT_OVERRIDE);
-		printf("Hide home indicator set to: %s\n", SDL_GetHint(SDL_HINT_IOS_HIDE_HOME_INDICATOR));
+		printf("SDL_HINT_IOS_HIDE_HOME_INDICATOR set to: %s\n", SDL_GetHint(SDL_HINT_IOS_HIDE_HOME_INDICATOR));
 		#endif
 
 		
