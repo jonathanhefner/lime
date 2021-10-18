@@ -644,7 +644,7 @@ class NativeApplication {
 
 					window.__minimized = true;
 					window.__maximized = false;
-					window.__fullscreen = false;
+					//window.__fullscreen = false;
 					window.onMinimize.dispatch ();
 
 				case WINDOW_MOVE:
@@ -661,7 +661,7 @@ class NativeApplication {
 
 				case WINDOW_RESTORE:
 
-					window.__fullscreen = false;
+					//window.__fullscreen = false;
 					window.__minimized = false;
 					window.onRestore.dispatch ();
 
