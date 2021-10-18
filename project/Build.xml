@@ -399,6 +399,7 @@
 				<lib name="shell32.lib" />
 				<lib name="comdlg32.lib" />
 				<lib name="comsuppw.lib" unless="winrt" />
+				<lib name="setupapi.lib" />
 
 				<lib name="D3D11.lib" if="winrt" />
 				<lib name="RuntimeObject.lib" if="winrt" />
