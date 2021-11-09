@@ -7,6 +7,11 @@
 #include <ui/Cursor.h>
 #include <ui/Window.h>
 
+#ifdef HX_WINDOWS
+#include <SDL_syswm.h>
+#include <Windows.h>
+#endif
+
 
 namespace lime {
 
@@ -63,6 +68,10 @@ namespace lime {
 			SDL_GLContext context;
 			int contextHeight;
 			int contextWidth;
+
+			#ifdef HX_WINDOWS
+			UINT EnsureSingleInstance(HWND hwnd, LPCWSTR name);
+			#endif
 
 	};
 

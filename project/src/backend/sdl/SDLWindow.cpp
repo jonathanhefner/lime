@@ -30,6 +30,11 @@ namespace lime {
 
 	static bool displayModeSet = false;
 
+	#ifdef HX_WINDOWS
+	UINT g_uShowMessage;
+	LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+	#endif
+
 
 	SDLWindow::SDLWindow (Application* application, int width, int height, int flags, const char* title) {
 
@@ -273,6 +278,16 @@ namespace lime {
 		}
 
 		if (context || sdlRenderer) {
+
+			#ifdef HX_WINDOWS
+			SDL_SysWMinfo wmInfo;
+			SDL_VERSION(&wmInfo.version);
+			SDL_GetWindowWMInfo(sdlWindow, &wmInfo);
+			HWND hwnd = wmInfo.info.win.window;
+
+			g_uShowMessage = EnsureSingleInstance(hwnd, L"80600EF3-FA0D-4EFF-ACBD-D900A886F213");
+
+			#endif
 
 			((SDLApplication*)currentApplication)->RegisterWindow (this);
 
@@ -1069,6 +1084,30 @@ namespace lime {
 		return new SDLWindow (application, width, height, flags, title);
 
 	}
+
+
+	#ifdef HX_WINDOWS
+	UINT SDLWindow::EnsureSingleInstance(HWND hwnd, LPCWSTR name)
+	{
+		UINT msg = RegisterWindowMessageW(name);
+
+		HANDLE hEvent = CreateMutexW(NULL, TRUE, name);
+		if (hEvent != NULL && GetLastError() == 0)
+		{
+			// First instance.
+			return msg;
+		}
+
+		CloseHandle(hEvent);
+		if (GetLastError() == ERROR_ALREADY_EXISTS)
+		{
+			PostMessage(HWND_BROADCAST, msg, 0, 0);
+			ExitProcess(0);
+		}
+
+		return msg;
+	}
+	#endif
 
 
 }
